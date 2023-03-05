@@ -20,9 +20,12 @@ def trainer_fn(gabor_generator, model_neuron,
     pbar = trange(epochs, desc="Loss: {}".format(np.nan), leave=True)
     saved_rfs = []
     for epoch in pbar:
+        # if epoch%100 == 0:
+            # print(f'epoch: {epoch}, lr = {lr}')
         
         current_lr = optimizer.state_dict()['param_groups'][0]['lr']
         if old_lr != current_lr:
+            # print("CHANGE!")
             old_lr = current_lr
             lr_change_counter += 1
 
@@ -57,4 +60,5 @@ def trainer_fn(gabor_generator, model_neuron,
         lr_scheduler.step(-loss)
 
     gabor_generator.eval();
-    return gabor_generator, saved_rfs
+    # added loss
+    return gabor_generator, saved_rfs, loss

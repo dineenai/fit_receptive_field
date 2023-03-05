@@ -4,7 +4,8 @@ from torch import optim
 from tqdm import trange
 
 
-def trainer_fn2(dog_gen, model_neuron,
+# def trainer_fn2(dog_gen, model_neuron,
+def trainer_fn2(dog_generator, model_neuron,
                epochs=20000, lr=5e-3,
                fixed_std=.01,
                save_rf_every_n_epoch=None,
@@ -14,12 +15,15 @@ def trainer_fn2(dog_gen, model_neuron,
     optimizer = optimizer(dog_generator.parameters(), lr=lr)
 
     lr_scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='max', factor=0.1, patience=10)
-    old_lr = lr
+    old_lr = lr 
+    # print(f'old lr = {old_lr}') - prints just once
     lr_change_counter = 0
 
     pbar = trange(epochs, desc="Loss: {}".format(np.nan), leave=True)
     saved_rfs = []
     for epoch in pbar:
+        # if epoch%100 == 0:
+        #     print(f'epoch: {epoch}, lr = {lr}')
         
         current_lr = optimizer.state_dict()['param_groups'][0]['lr']
         if old_lr != current_lr:
@@ -57,4 +61,5 @@ def trainer_fn2(dog_gen, model_neuron,
         lr_scheduler.step(-loss)
 
     dog_generator.eval();
-    return dog_generator, saved_rfs
+    # added loss
+    return dog_generator, saved_rfs, loss
