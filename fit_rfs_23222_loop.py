@@ -4,7 +4,8 @@
 # ammended from Copy of gitGabs2_Aine_Edited.ipynb
 # Code from Alex Wade - Nov 21
 
-
+import argparse
+import os
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -23,19 +24,31 @@ import torch
 from torch import nn
 from torch.nn import functional as F
 
+parser = argparse.ArgumentParser(description='Fit Receptive Fields')
+parser.add_argument('--chosen_net', default='', type=str, metavar='NET',
+                    help='path to latest checkpoint (default: none)')
+args = parser.parse_args()
+chosen_net = args.chosen_net
+# chosen_net = 'supRN50_conv1_21_g4_60e_e60'
+
+
 # /home/ainedineen/blurry_vision/pytorch_untrained_models/imagenet/fit_receptive_field
 
 # /home/ainedineen/blurry_vision/pytorch_untrained_models/imagenet/visualizing_filters/conv1_filters/supRN50_conv1_21_g4_60e_e60_np_arr/supRN50_conv1_21_g4_60e_e60_filter_np_arr_61.npy
 
 # supRN50_conv1_21_g0_60e_e60_np_arr/supRN50_conv1_21_g0_60e_e60_filter_np_arr_13.npy
 
-out_dir = 'fit_compv2'
+
+out_dir = f'/home/ainedineen/blurry_vision/pytorch_untrained_models/imagenet/fit_receptive_field/fit_comp-Mar23/{chosen_net}'
+if not os.path.exists(out_dir):
+    os.makedirs(out_dir)
+    
 # {out_dir}
 # im_name = 'supRN50_conv1_21_g4_60e_e60_filter_np_arr_61'
 
 
 # chosen_net = 'supRN50_conv1_21_g0_60e_e60'
-chosen_net = 'supRN50_conv1_21_g4_60e_e60'
+
 # /home/ainedineen/blurry_vision/pytorch_untrained_models/imagenet/fit_receptive_field
 
 import os
@@ -233,25 +246,26 @@ for i in range (size):
     # learned_rf_gabor_pro.sigma
     # learned_rf_gabor_pro.sigma_x
 
+    # # Comment out graphs Mar 23
+    # fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(6, 3), dpi=100)
+    # ax1.imshow(learned_rf_gabor);
+    # # ax1.set(xticks=[], yticks=[], title="Learned DOG")
+    # ax1.set(xticks=[], yticks=[], title="unprocessed gabor")
+    # ax2.imshow(learned_rf_gabor_pro);
+    # # ax2.set(xticks=[], yticks=[], title="Learned Gabor")
+    # ax2.set(xticks=[], yticks=[], title="processed gabor")
 
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(6, 3), dpi=100)
-    ax1.imshow(learned_rf_gabor);
-    # ax1.set(xticks=[], yticks=[], title="Learned DOG")
-    ax1.set(xticks=[], yticks=[], title="unprocessed gabor")
-    ax2.imshow(learned_rf_gabor_pro);
-    # ax2.set(xticks=[], yticks=[], title="Learned Gabor")
-    ax2.set(xticks=[], yticks=[], title="processed gabor")
-
-    fig.savefig(f'{out_dir}/pro_vs_unpro_gabor_{im_name}.png')
+    # fig.savefig(f'{out_dir}/pro_vs_unpro_gabor_{im_name}.png')
 
 
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(6, 3), dpi=100)
-    ax1.imshow(learned_rf_dog);
-    ax1.set(xticks=[], yticks=[], title="unprocessed dog")
-    ax2.imshow(learned_rf_dog_pro);
-    ax2.set(xticks=[], yticks=[], title="processed dog")
+    # # Comment out graphs Mar 23
+    # fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(6, 3), dpi=100)
+    # ax1.imshow(learned_rf_dog);
+    # ax1.set(xticks=[], yticks=[], title="unprocessed dog")
+    # ax2.imshow(learned_rf_dog_pro);
+    # ax2.set(xticks=[], yticks=[], title="processed dog")
 
-    fig.savefig(f'{out_dir}/pro_vs_unpro_dog_{im_name}.png')
+    # fig.savefig(f'{out_dir}/pro_vs_unpro_dog_{im_name}.png')
 
 
 
@@ -373,4 +387,4 @@ rf_model_params = pd.DataFrame(
 
 # df.to_csv(index=False)
 # rf_model_params.to_csv(f'rf_model_params/supRN50_conv1_21_g0_60e_e60_rf_model_params.csv')
-rf_model_params.to_csv(f'rf_model_params/{chosen_net}_rf_model_params.csv')
+rf_model_params.to_csv(f'rf_model_params-Mar23/{chosen_net}_rf_model_params.csv')
